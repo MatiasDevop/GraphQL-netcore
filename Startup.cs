@@ -32,7 +32,8 @@ namespace CommanderGQL
 
             services
             .AddGraphQLServer()
-            .AddQueryType<Query>();    
+            .AddQueryType<Query>()
+            .AddProjections();    // this makes sure bring up our relationships
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

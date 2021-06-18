@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommanderGQL.Data;
 using CommanderGQL.GraphQL;
+using GraphQL.Server.Ui.Voyager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -25,7 +26,8 @@ namespace CommanderGQL
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(opt =>
+            //to reuse the same context
+            services.AddPooledDbContextFactory<AppDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("CommandConStr")));
 
             services
@@ -47,6 +49,11 @@ namespace CommanderGQL
             {
                endpoints.MapGraphQL();
             });
+
+            app.UseGraphQLVoyager(new VoyagerOptions()
+            {
+                GraphQLEndPoint = "/graphql",
+            }, "/graphql-voyager");
         }
     }
 }

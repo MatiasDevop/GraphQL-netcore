@@ -36,10 +36,12 @@ namespace CommanderGQL
             .AddGraphQLServer()
             .AddQueryType<Query>()
             .AddMutationType<Mutation>()
+            .AddSubscriptionType<Subscription>()
             .AddType<PlatformType>()
             .AddType<CommandType>()
             .AddFiltering()
-            .AddSorting();
+            .AddSorting()
+            .AddInMemorySubscriptions();
             //.AddProjections();    // this makes sure bring up our relationships// remove this when you use resolvers.
         }
 
@@ -50,6 +52,8 @@ namespace CommanderGQL
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseWebSockets();// to use subscriptions
 
             app.UseRouting();
 

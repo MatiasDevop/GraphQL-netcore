@@ -36,7 +36,9 @@ namespace CommanderGQL
             .AddGraphQLServer()
             .AddQueryType<Query>()
             .AddType<PlatformType>()
-            .AddType<CommandType>();
+            .AddType<CommandType>()
+            .AddFiltering()
+            .AddSorting();
             //.AddProjections();    // this makes sure bring up our relationships// remove this when you use resolvers.
         }
 

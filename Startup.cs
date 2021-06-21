@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommanderGQL.Data;
 using CommanderGQL.GraphQL;
+using CommanderGQL.GraphQL.Commands;
+using CommanderGQL.GraphQL.Platforms;
 using GraphQL.Server.Ui.Voyager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,7 +35,14 @@ namespace CommanderGQL
             services
             .AddGraphQLServer()
             .AddQueryType<Query>()
-            .AddProjections();    // this makes sure bring up our relationships
+            .AddMutationType<Mutation>()
+            .AddSubscriptionType<Subscription>()
+            .AddType<PlatformType>()
+            .AddType<CommandType>()
+            .AddFiltering()
+            .AddSorting()
+            .AddInMemorySubscriptions();
+            //.AddProjections();    // this makes sure bring up our relationships// remove this when you use resolvers.
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +52,8 @@ namespace CommanderGQL
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseWebSockets();// to use subscriptions
 
             app.UseRouting();
 

@@ -28,6 +28,7 @@ namespace CommanderGQL
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             //to reuse the same context
             services.AddPooledDbContextFactory<AppDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("CommandConStr")));
@@ -48,6 +49,11 @@ namespace CommanderGQL
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(options =>{
+                options.WithOrigins("http://localhost:4200");
+                options.AllowAnyMethod();
+                options.AllowAnyHeader();
+            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
